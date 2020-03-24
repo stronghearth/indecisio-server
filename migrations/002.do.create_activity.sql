@@ -5,7 +5,7 @@ CREATE TABLE activity(
      /*
       *  category TEXT NOT NULL,
      */
-     isAccepted bit string length 0,
-     isRejected bit string length 0,
+     isAccepted default bit(1),
+     isRejected default bit(1),
      date_created TIMESTAMPTZ default now() NOT NULL
 );
