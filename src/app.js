@@ -1,33 +1,35 @@
-require('dotenv').config()
+require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
-const { NODE_ENV } = require('./config')
-
+const { NODE_ENV } = require('./config');
+const ActivityRouter = require('./activity/activity-router');
 const app = express();
 
 const morganOption = (NODE_ENV === 'production')
   ? 'tiny'
   : 'dev';
 
-app.use(morgan(morganOption))
-app.use(helmet())
-app.use(cors())
+app.use(morgan(morganOption));
+app.use(helmet());
+app.use(cors());
+app.options('*', cors());
 
-app.get('/', (req, res) => {
-    res.send('I\'m gonna give it my all!')
-})
 
+app.use('/api/activity', ActivityRouter);
+
+/*
 app.use('/', (req, res) => {
     let response;
     if (NODE_ENV === 'production') {
-        response = {error: {messge: 'server error'}}
+        response = {error: {message: 'server error'}}
     }
     else {
-        respone = {messge: error.message, error}
+        response = {message: error.message, error}
     }
     res.status(500).json(response)
-})
+});
+*/
 
-module.exports = app
+module.exports = app;
