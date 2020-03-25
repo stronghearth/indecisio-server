@@ -66,7 +66,7 @@ ActivityRouter
 		const db = req.app.get('db');
 		const activity_id = req.params.activity_id;
 		
-		ActivityService.deleteActivity(db, Activity_id)
+		ActivityService.deleteActivity(db, activity_id)
 			.then(numRowsAffected => {
 				res.status(204).end()
 			})
@@ -74,22 +74,21 @@ ActivityRouter
 	})
 	
 	.patch(bodyParser, (req,res,next) => {
-		const { activity, artist, album, venue, show_date } = req.body;
+		const { name, description } = req.body;
+		const ActivityToUpdate = { name, description };
+		const updateActivityID = req.params.activity_id;
 		const numberOfValues = Object.values(ActivityToUpdate).filter(Boolean).length;
 		if (numberOfValues === 0) {
 			return res.status(400).json({
 				error: {
-					message: `Request body must content either 'Activity', 'artist', 'album', 'venue' or 'date'`
+					message: `Request body must contain either 'name' or 'description'`
 				}
 			})
 		}
 		
-		
-		
-		
 		ActivityService.updateActivity(
 			req.app.get('db'),
-			req.params.activity_id,
+			updateActivityID,
 			ActivityToUpdate
 		)
 			.then(res => {
