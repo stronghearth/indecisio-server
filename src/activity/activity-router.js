@@ -73,7 +73,7 @@ ActivityRouter
 			.catch(next);
 	})
 	
-	.patch(bodyParser, (req,ers,next) => {
+	.patch(bodyParser, (req,res,next) => {
 		const { activity, artist, album, venue, show_date } = req.body;
 		const numberOfValues = Object.values(ActivityToUpdate).filter(Boolean).length;
 		if (numberOfValues === 0) {
