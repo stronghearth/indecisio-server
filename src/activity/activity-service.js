@@ -18,6 +18,7 @@ const ActivityService = {
 	Inserts a user created Activity into the table called 'activity'
 	 */
 	insertActivity(db, newActivity) {
+		debugger
 		return db
 			.insert(newActivity)
 			.into('activity')
@@ -53,16 +54,18 @@ const ActivityService = {
 			.update(newActivityFields)
 	},
 	
-	serializeActivity(activity) {
-		return activity.map(this.serializeActivity)
+	serializeActivities(activities) {
+		return activities.map(this.serializeActivity)
 	},
 	
 	serializeActivity(activity) {
 		
 		return {
+			id: activity.id,
 			name: xss(activity.name),
-			description: xss(activity.description)
-			
+			description: xss(activity.description),
+			isAccepted: activity.isAccepted,
+			isRejected: activity.isRejected
 		}
 	}
 };
