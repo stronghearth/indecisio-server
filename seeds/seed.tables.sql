@@ -7,9 +7,9 @@ TRUNCATE
 -- admin123!
 
 INSERT INTO app_user (name, username, password_hash) VALUES ('Quarantino Admin','admin','$2a$12$FS/uVNt/sT6SZ344UokyMuy04pE26.4aBco/DC31oMbHjCPxh1f2a' );
-INSERT INTO activity (name, description) VALUES
-('Pushups', 'Drop and give me 50'),
-('Learn everything there is to know about the socratic paradox', 'This one shouldnt take long at all');
+INSERT INTO activity (name, description, is_accepted, is_rejected) VALUES
+('Pushups', 'Drop and give me 50', false, true),
+('Learn everything there is to know about the socratic paradox', 'This one should not take long at all', true, false);
 
 SELECT setval('app_user_id_seq', (SELECT MAX(id) from app_user));
 SELECT setval('activity_id_seq', (SELECT MAX(id) from activity));

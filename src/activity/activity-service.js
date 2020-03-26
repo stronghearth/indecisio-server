@@ -64,8 +64,8 @@ const ActivityService = {
 			id: activity.id,
 			name: xss(activity.name),
 			description: xss(activity.description),
-			isAccepted: activity.isAccepted,
-			isRejected: activity.isRejected
+			isAccepted: activity.is_accepted,
+			isRejected: activity.is_rejected
 		}
 	}
 };
