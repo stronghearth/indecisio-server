@@ -40,7 +40,8 @@ ActivityRouter
 					.json(ActivityService.serializeActivity(activity))
 			})
 			.catch(next);
-	});
+	})
+	
 
 ActivityRouter
 	.route('/:activity_id')
@@ -77,7 +78,10 @@ ActivityRouter
 	})
 	
 	.patch(bodyParser, (req,res,next) => {
-		const { activity, artist, album, venue, show_date } = req.body;
+		const { name, description, is_accepted, is_rejected } = req.body;
+
+		const ActivityToUpdate = { name, description, is_accepted, is_rejected };
+		
 		const numberOfValues = Object.values(ActivityToUpdate).filter(Boolean).length;
 		if (numberOfValues === 0) {
 			return res.status(400).json({
@@ -86,9 +90,6 @@ ActivityRouter
 				}
 			})
 		}
-		
-		
-		
 		
 		ActivityService.updateActivity(
 			req.app.get('db'),
