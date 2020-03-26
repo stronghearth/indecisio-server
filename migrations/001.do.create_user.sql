@@ -1,6 +1,6 @@
 CREATE TABLE app_user(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    name_user TEXT NOT NULL,
+    name TEXT NOT NULL,
     username TEXT NOT NULL UNIQUE,
     password_hash TEXT NOT NULL
 );

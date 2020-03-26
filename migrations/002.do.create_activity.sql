@@ -1,6 +1,6 @@
 CREATE TABLE activity(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    name_activity VARCHAR(50) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
      /*
       *  category TEXT NOT NULL,

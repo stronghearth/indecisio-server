@@ -76,7 +76,7 @@ ActivityRouter
 	.patch(bodyParser, (req,res,next) => {
 		const { name, description } = req.body;
 		const ActivityToUpdate = { name, description };
-		const updateActivityID = req.params.activity_id;
+		const { updateActivityID } = req.params;
 		const numberOfValues = Object.values(ActivityToUpdate).filter(Boolean).length;
 		if (numberOfValues === 0) {
 			return res.status(400).json({
