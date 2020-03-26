@@ -1,6 +1,7 @@
 const express = require('express');
 const ActivityService = require('./activity-service');
 const path = require('path');
+const { requireAuth } = require('../middleware/jwt-auth')
 const bodyParser = express.json();
 const ActivityRouter = express.Router();
 
@@ -8,6 +9,7 @@ const ActivityRouter = express.Router();
 
 ActivityRouter
 	.route('/')
+	.all(requireAuth)
 	.get((req,res,next) => {
 		const db = req.app.get('db');
 		ActivityService.getAllActivity(db)
@@ -42,6 +44,7 @@ ActivityRouter
 
 ActivityRouter
 	.route('/:activity_id')
+	.all(requireAuth)
 	.all((req,res,next) => {
 		const db = req.app.get('db');
 		
@@ -66,7 +69,7 @@ ActivityRouter
 		const db = req.app.get('db');
 		const activity_id = req.params.activity_id;
 		
-		ActivityService.deleteActivity(db, activity_id)
+		ActivityService.deleteActivity(db, Activity_id)
 			.then(numRowsAffected => {
 				res.status(204).end()
 			})
@@ -74,21 +77,22 @@ ActivityRouter
 	})
 	
 	.patch(bodyParser, (req,res,next) => {
-		const { name, description } = req.body;
-		const ActivityToUpdate = { name, description };
-		const { updateActivityID } = req.params;
+		const { activity, artist, album, venue, show_date } = req.body;
 		const numberOfValues = Object.values(ActivityToUpdate).filter(Boolean).length;
 		if (numberOfValues === 0) {
 			return res.status(400).json({
 				error: {
-					message: `Request body must contain either 'name' or 'description'`
+					message: `Request body must content either 'Activity', 'artist', 'album', 'venue' or 'date'`
 				}
 			})
 		}
 		
+		
+		
+		
 		ActivityService.updateActivity(
 			req.app.get('db'),
-			updateActivityID,
+			req.params.activity_id,
 			ActivityToUpdate
 		)
 			.then(res => {
