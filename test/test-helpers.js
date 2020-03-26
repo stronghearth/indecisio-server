@@ -35,11 +35,11 @@ function makeUsersArray() {
 }
 
 /**
- * generate fixtures of languages and words for a given user
+ * generate fixtures of activities for a given user
  * @param {object} user - contains `id` property
- * @returns {Array(activities)} - arrays of languages and words
+ * @returns {Array(activities)} - arrays of activities
  */
-function makeActivityBody(user) {
+function makeActivityBody() {
 	const activities = [
 		{
 			name: 'name mcnamey',
