@@ -11,7 +11,7 @@ const ActivityService = {
 	Grabs all Activitys from the table called 'activity'
 	 */
 	getAllActivity(db) {
-		return db.select('*').from('activity')
+		return db.select('*').from('activity').orderBy('id')
 	},
 	
 	/*
@@ -50,8 +50,9 @@ const ActivityService = {
 	updateActivity(db, id, newActivityFields) {
 		return db
 			.from('activity')
-			.where( id )
+			.where({ id })
 			.update(newActivityFields)
+
 	},
 	
 	serializeActivities(activities) {
@@ -64,8 +65,8 @@ const ActivityService = {
 			id: activity.id,
 			name: xss(activity.name),
 			description: xss(activity.description),
-			isAccepted: activity.is_accepted,
-			isRejected: activity.is_rejected
+			is_accepted: activity.is_accepted,
+			is_rejected: activity.is_rejected
 		}
 	}
 };

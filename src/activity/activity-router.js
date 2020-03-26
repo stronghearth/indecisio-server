@@ -81,12 +81,12 @@ ActivityRouter
 		const { name, description, is_accepted, is_rejected } = req.body;
 
 		const ActivityToUpdate = { name, description, is_accepted, is_rejected };
-		
+		console.log(req.params.activity_id, ActivityToUpdate)
 		const numberOfValues = Object.values(ActivityToUpdate).filter(Boolean).length;
 		if (numberOfValues === 0) {
 			return res.status(400).json({
 				error: {
-					message: `Request body must content either 'Activity', 'artist', 'album', 'venue' or 'date'`
+					message: `Request body must contain at least one of the following keys: 'name', 'description', 'is_accepted', 'is_rejected'`
 				}
 			})
 		}
@@ -96,7 +96,8 @@ ActivityRouter
 			req.params.activity_id,
 			ActivityToUpdate
 		)
-			.then(res => {
+			.then(numRowsAffected => {
+				console.log(res)
 				res.status(204).end()
 			})
 			.catch(next)
