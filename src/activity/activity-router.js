@@ -1,5 +1,6 @@
 const express = require('express');
 const ActivityService = require('./activity-service');
+const ProfileService = require('../profile/profile-service')
 const path = require('path');
 const { requireAuth } = require('../middleware/jwt-auth')
 const bodyParser = express.json();
@@ -81,7 +82,7 @@ ActivityRouter
 		const { name, description, is_accepted, is_rejected } = req.body;
 
 		const ActivityToUpdate = { name, description, is_accepted, is_rejected };
-		console.log(req.params.activity_id, ActivityToUpdate)
+	
 		const numberOfValues = Object.values(ActivityToUpdate).filter(Boolean).length;
 		if (numberOfValues === 0) {
 			return res.status(400).json({
@@ -90,6 +91,15 @@ ActivityRouter
 				}
 			})
 		}
+
+		// const newRow = {
+		// 	user_id: req.user.id,
+		// 	activity: req.params.activity_id,
+		// 	accepted: is_accepted,
+		// 	rejected: is_rejected
+		// }
+		// console.log(newRow, 'NEW ROW')
+		// ProfileService.insertAcceptedRejectedRow(req.app.get('db'), newRow)
 		
 		ActivityService.updateActivity(
 			req.app.get('db'),
