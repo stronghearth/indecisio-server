@@ -5,8 +5,10 @@ const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
 const ActivityRouter = require('./activity/activity-router');
+const CategoriesRouter = require('./categories/categories-router')
 const authRouter = require('./auth/auth-router')
 const userRouter = require('./user/user-router')
+
 const app = express();
 
 const morganOption = (NODE_ENV === 'production')
@@ -20,8 +22,10 @@ app.options('*', cors());
 
 
 app.use('/api/activity', ActivityRouter);
+app.use('/api/categories', CategoriesRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
+
 
 
 app.use('/', (req, res) => {
