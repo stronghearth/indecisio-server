@@ -18,7 +18,6 @@ const ActivityService = {
 	Inserts a user created Activity into the table called 'activity'
 	 */
 	insertActivity(db, newActivity) {
-		debugger
 		return db
 			.insert(newActivity)
 			.into('activity')
@@ -47,6 +46,7 @@ const ActivityService = {
 			.where({ id })
 			.delete()
 	},
+	
 	updateActivity(db, id, newActivityFields) {
 		return db
 			.from('activity')
