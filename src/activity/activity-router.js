@@ -71,7 +71,7 @@ ActivityRouter
 		const db = req.app.get('db');
 		const activity_id = req.params.activity_id;
 		
-		ActivityService.deleteActivity(db, Activity_id)
+		ActivityService.deleteActivity(db, activity_id)
 			.then(numRowsAffected => {
 				res.status(204).end()
 			})
@@ -81,7 +81,7 @@ ActivityRouter
 	.patch(bodyParser, (req,res,next) => {
 		const { name, description, is_accepted, is_rejected } = req.body;
 
-		const ActivityToUpdate = { name, description, is_accepted, is_rejected };
+		const ActivityToUpdate = { name, description, is_accepted, is_rejected};
 	
 		const numberOfValues = Object.values(ActivityToUpdate).filter(Boolean).length;
 		if (numberOfValues === 0) {
@@ -92,22 +92,17 @@ ActivityRouter
 			})
 		}
 
-		// const newRow = {
-		// 	user_id: req.user.id,
-		// 	activity: req.params.activity_id,
-		// 	accepted: is_accepted,
-		// 	rejected: is_rejected
-		// }
-		// console.log(newRow, 'NEW ROW')
-		// ProfileService.insertAcceptedRejectedRow(req.app.get('db'), newRow)
+		if(is_accepted) {
+			ActivityToUpdate.accepted_count = res.activity.accepted_count + 1
+		}
 		
+		console.log(ActivityToUpdate, 'ActivityToUpdate')
 		ActivityService.updateActivity(
 			req.app.get('db'),
 			req.params.activity_id,
 			ActivityToUpdate
 		)
 			.then(numRowsAffected => {
-				console.log(res)
 				res.status(204).end()
 			})
 			.catch(next)

@@ -1,5 +1,19 @@
 const ProfileService = {
-    
+
+    getTopActivitiesList(db){
+        return db
+                .select('name', 'accepted_count')
+                .from('activity')
+                .orderBy([{column: 'accepted_count', order: 'desc'}, {column: 'name'}])
+    },
+
+    getUserTopActivitiesList(db, userId){
+        return db   
+                .select('accepted_count')
+                .from('accepted_rejected')
+                .where({user_id: userId})
+                .orderBy('accepted_count', 'desc')
+    },
     insertAcceptedRejectedRow(db, newRow) {
         return db
                 .insert(newRow)
@@ -8,33 +22,12 @@ const ProfileService = {
                 .then(([row]) => row)
     },
 
-    getSingleGlobalAcitiviyAcceptance(db, id) {
-        return db
-                .from('accepted_rejected')
-                .count('*')
-                .where({
-                    'activity': id,
-                    'accepted': true })
-                .first()         
+    updateAcceptedCount(db, activityId, userId, acceptedCount){
+        return db('accepted_rejected')
+                .where({activity: activityId, user_id: userId})
+                .first()
+                .update({accepted_count: acceptedCount})
     },
-
-    getSingleUserActivityAcceptance(db, userId, activityId) {
-        return db
-                .from('accepted_rejected')
-                .count('*')
-                .where({
-                    'activity_id': activityId,
-                    'user_id': userId,
-                    'accepted': true
-                })
-    },
-
-    getAllTheCounts(db) {
-        return db
-                .select('id', 'name')
-                .from('activity')
-                .leftJoin('accepted_rejected', 'activity.id', 'accepted_rejected.id')
-    }
  
 }
 
