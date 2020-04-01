@@ -9,6 +9,8 @@ const CategoriesRouter = require('./categories/categories-router')
 const authRouter = require('./auth/auth-router')
 const userRouter = require('./user/user-router')
 
+const profileRouter = require('./profile/profile-router')
+
 const app = express();
 
 const morganOption = (NODE_ENV === 'production')
@@ -25,6 +27,7 @@ app.use('/api/activity', ActivityRouter);
 app.use('/api/categories', CategoriesRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
+app.use('/api/profile', profileRouter)
 
 
 
