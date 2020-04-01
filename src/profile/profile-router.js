@@ -6,16 +6,23 @@ const ProfileRouter = express.Router();
 
 ProfileRouter
     .route('/mostpopular')
-    .get(async (req, res, next) => {
+
+    .get((req, res, next) => {
         const db = req.app.get('db')
 
-        const activitiesList = await ActivityService.getAllActivity(db)
-        console.log("ACTIVITIES", activitiesList)
-        const result = await ProfileService.getSingleGlobalAcitiviyAcceptance(db, 2)
-        const aggregatedResults = await activitiesList.forEach(activity => ProfileService.getSingleGlobalAcitiviyAcceptance(db, activity.id))
-        //results = [ {count: '4'},{count: '5'}]
-        console.log('SINGLE RESULT', result)
-        console.log('AGGREGATED', aggregatedResults)
+        ProfileService.getTopActivitiesList(db)
+            .then(activities => res.json(activities))
+            .catch(next)
+    })
+
+ProfileRouter
+    .route('/user')
+    .all(requireAuth)
+    .all((req, res, next) => {
+        const db = req.app.get('db')
+
+        ProfileService.getUserTopActivitiesList(db, req.user.id)
+        .then(res => console.log(res.body))
     })
 
 module.exports = ProfileRouter
