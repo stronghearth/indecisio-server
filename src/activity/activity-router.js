@@ -92,14 +92,14 @@ ActivityRouter
 			})
 		}
 
-		const newRow = {
-			user_id: req.user.id,
-			activity: req.params.activity_id,
-			accepted: is_accepted,
-			rejected: is_rejected
-		}
-		console.log(newRow, 'NEW ROW')
-		ProfileService.insertAcceptedRejectedRow(req.app.get('db'), newRow)
+		// const newRow = {
+		// 	user_id: req.user.id,
+		// 	activity: req.params.activity_id,
+		// 	accepted: is_accepted,
+		// 	rejected: is_rejected
+		// }
+		// console.log(newRow, 'NEW ROW')
+		// ProfileService.insertAcceptedRejectedRow(req.app.get('db'), newRow)
 		
 		ActivityService.updateActivity(
 			req.app.get('db'),
