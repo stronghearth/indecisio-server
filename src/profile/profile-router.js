@@ -22,7 +22,12 @@ ProfileRouter
         const db = req.app.get('db')
 
         ProfileService.getUserTopActivitiesList(db, req.user.id)
-        .then(res => console.log(res.body))
+        .then(activities => {
+            res.topActivities = activities
+            next()
+        })
+        .catch(next)
     })
+    
 
 module.exports = ProfileRouter

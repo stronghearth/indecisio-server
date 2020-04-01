@@ -31,7 +31,8 @@ app.use('/api/profile', profileRouter)
 
 
 
-app.use('/', (req, res) => {
+
+app.use('/', (error, req, res, next) => {
     let response;
     if (NODE_ENV === 'production') {
         response = {error: {message: 'server error'}}
