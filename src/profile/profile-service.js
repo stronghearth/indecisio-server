@@ -2,9 +2,9 @@ const ProfileService = {
 
     getTopActivitiesList(db){
         return db
-                .select('name', 'accepted_count')
+                .select('name', 'global_accepted_count')
                 .from('activity')
-                .orderBy([{column: 'accepted_count', order: 'desc'}, {column: 'name'}])
+                .orderBy([{column: 'global_accepted_count', order: 'desc'}, {column: 'name'}])
     },
 
     getUserTopActivitiesList(db, userId){

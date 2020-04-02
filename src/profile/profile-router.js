@@ -6,7 +6,6 @@ const ProfileRouter = express.Router();
 
 ProfileRouter
     .route('/mostpopular')
-
     .get((req, res, next) => {
         const db = req.app.get('db')
 
