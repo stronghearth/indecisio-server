@@ -9,11 +9,13 @@ const ProfileService = {
 
     getUserTopActivitiesList(db, userId){
         return db   
-                .select('accepted_count')
+                .select('name', 'accepted_count')
                 .from('accepted_rejected')
+                .rightJoin('activity', 'activity', 'activity.id')
                 .where({user_id: userId})
-                .orderBy('accepted_count', 'desc')
+                .orderBy([{column: 'accepted_count', order: 'desc'}, {column: 'name'}])
     },
+
     insertAcceptedRejectedRow(db, newRow) {
         return db
                 .insert(newRow)
@@ -22,11 +24,21 @@ const ProfileService = {
                 .then(([row]) => row)
     },
 
+    getUserActivityAcceptance(db, userId, activityId) {
+        return db
+                .select('*')
+                .from('accepted_rejected')
+                .where({user_id: userId, activity: activityId})
+    },
+
     updateAcceptedCount(db, activityId, userId, acceptedCount){
         return db('accepted_rejected')
                 .where({activity: activityId, user_id: userId})
                 .first()
                 .update({accepted_count: acceptedCount})
+                .then(rows => {
+                    return rows[0];
+                  });
     },
  
 }

@@ -18,16 +18,15 @@ ProfileRouter
 ProfileRouter
     .route('/user')
     .all(requireAuth)
-    .all((req, res, next) => {
+    .get((req, res, next) => {
         const db = req.app.get('db')
 
         ProfileService.getUserTopActivitiesList(db, req.user.id)
         .then(activities => {
-            res.topActivities = activities
-            next()
+            res.json(activities)
         })
         .catch(next)
     })
-    
+
 
 module.exports = ProfileRouter
