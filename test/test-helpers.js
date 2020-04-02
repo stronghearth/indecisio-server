@@ -1,16 +1,16 @@
-const knex = require('knex')
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+const knex = require('knex');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 /**
  * create a knex instance connected to postgres
  * @returns {knex instance}
  */
 function makeKnexInstance() {
-	return knex({
-		client: 'pg',
-		connection: process.env.TEST_DB_URL,
-	})
+  return knex({
+    client: 'pg',
+    connection: process.env.TEST_DB_URL,
+  });
 }
 
 /**
@@ -18,20 +18,20 @@ function makeKnexInstance() {
  * @returns {array} of user objects
  */
 function makeUsersArray() {
-	return [
-		{
-			id: 1,
-			username: 'test-user-1',
-			name: 'Test user 1',
-			password: 'password',
-		},
-		{
-			id: 2,
-			username: 'test-user-2',
-			name: 'Test user 2',
-			password: 'password',
-		},
-	]
+  return [
+    {
+      id: 1,
+      username: 'test-user-1',
+      name: 'Test user 1',
+      password: 'password',
+    },
+    {
+      id: 2,
+      username: 'test-user-2',
+      name: 'Test user 2',
+      password: 'password',
+    },
+  ];
 }
 
 /**
@@ -40,34 +40,34 @@ function makeUsersArray() {
  * @returns {Array(activities)} - arrays of activities
  */
 function makeActivityBody() {
-	const activities = [
-		{
-			name: 'name mcnamey',
-			description: 'ibnmstoibm'
-		},
-		{
-			name: 'name2 mcnamey2',
-			description: 'ibnmstoibm'
-		},
-		{
-			name: 'name3 mcnamey3',
-			description: 'ibnmstoibm'
-},
-		{
-			name: 'name4 mcnamey4',
-			description: 'ibnmstoibm'
-		},
-		{
-			name: 'name5 mcname5',
-			description: 'ibnmstoibm'
-		},
-		{
-			name: 'name5 mcnamey5',
-			description: 'ibnmstoibm'
-		},
-	]
+  const activities = [
+    {
+      name: 'name mcnamey',
+      description: 'ibnmstoibm'
+    },
+    {
+      name: 'name2 mcnamey2',
+      description: 'ibnmstoibm'
+    },
+    {
+      name: 'name3 mcnamey3',
+      description: 'ibnmstoibm'
+    },
+    {
+      name: 'name4 mcnamey4',
+      description: 'ibnmstoibm'
+    },
+    {
+      name: 'name5 mcname5',
+      description: 'ibnmstoibm'
+    },
+    {
+      name: 'name5 mcnamey5',
+      description: 'ibnmstoibm'
+    },
+  ];
 	
-	return [activities]
+  return [activities];
 }
 
 /**
@@ -77,11 +77,11 @@ function makeActivityBody() {
  * @returns {string} - for HTTP authorization header
  */
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
-	const token = jwt.sign({ user_id: user.id }, secret, {
-		subject: user.username,
-		algorithm: 'HS256',
-	})
-	return `Bearer ${token}`
+  const token = jwt.sign({ user_id: user.id }, secret, {
+    subject: user.username,
+    algorithm: 'HS256',
+  });
+  return `Bearer ${token}`;
 }
 
 /**
@@ -90,22 +90,22 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
  * @returns {Promise} - when tables are cleared
  */
 function cleanTables(db) {
-	return db.transaction(trx =>
-		trx.raw(
-			`TRUNCATE
+  return db.transaction(trx =>
+    trx.raw(
+      `TRUNCATE
         "activity",
         "user"`
-		)
-			.then(() =>
-				Promise.all([
-					trx.raw(`ALTER SEQUENCE app_user_id_seq minvalue 0 START WITH 1`),
-					trx.raw(`ALTER SEQUENCE activity_id_seq minvalue 0 START WITH 1`),
-					trx.raw(`SELECT setval('app_user_id_seq', 0)`),
-					trx.raw(`SELECT setval('activity_id_seq', 0)`),
+    )
+      .then(() =>
+        Promise.all([
+          trx.raw(`ALTER SEQUENCE app_user_id_seq minvalue 0 START WITH 1`),
+          trx.raw(`ALTER SEQUENCE activity_id_seq minvalue 0 START WITH 1`),
+          trx.raw(`SELECT setval('app_user_id_seq', 0)`),
+          trx.raw(`SELECT setval('activity_id_seq', 0)`),
 			
-				])
-			)
-	)
+        ])
+      )
+  );
 }
 
 /**
@@ -115,18 +115,18 @@ function cleanTables(db) {
  * @returns {Promise} - when users table seeded
  */
 function seedUsers(db, users) {
-	const preppedUsers = users.map(user => ({
-		...user,
-		password: bcrypt.hashSync(user.password, 1)
-	}))
-	return db.transaction(async trx => {
-		await trx.into('user').insert(preppedUsers)
+  const preppedUsers = users.map(user => ({
+    ...user,
+    password: bcrypt.hashSync(user.password, 1)
+  }));
+  return db.transaction(async trx => {
+    await trx.into('user').insert(preppedUsers);
 		
-		await trx.raw(
-			`SELECT setval('user_id_seq', ?)`,
-			[users[users.length - 1].id],
-		)
-	})
+    await trx.raw(
+      `SELECT setval('user_id_seq', ?)`,
+      [users[users.length - 1].id],
+    );
+  });
 }
 
 /**
@@ -138,28 +138,28 @@ function seedUsers(db, users) {
  * @returns {Promise} - when all tables seeded
  */
 async function seedUsersActivity(db, users, activities) {
-	await seedUsers(db, users)
+  await seedUsers(db, users);
 	
-	await db.transaction(async trx => {
-		await trx.into('activity').insert(activities)
+  await db.transaction(async trx => {
+    await trx.into('activity').insert(activities);
 		
 
 
-		await Promise.all([
-			trx.raw(
-				`SELECT setval('language_id_seq', ?)`,
-				[activities[activities.length - 1].id],
-			)
-		])
-	})
+    await Promise.all([
+      trx.raw(
+        `SELECT setval('language_id_seq', ?)`,
+        [activities[activities.length - 1].id],
+      )
+    ]);
+  });
 }
 
 module.exports = {
-	makeKnexInstance,
-	makeUsersArray,
-	makeActivityBody,
-	makeAuthHeader,
-	cleanTables,
-	seedUsers,
-	seedUsersActivity,
+  makeKnexInstance,
+  makeUsersArray,
+  makeActivityBody,
+  makeAuthHeader,
+  cleanTables,
+  seedUsers,
+  seedUsersActivity,
 };
