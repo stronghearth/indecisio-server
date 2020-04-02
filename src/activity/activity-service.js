@@ -11,7 +11,10 @@ const ActivityService = {
 	Grabs all Activitys from the table called 'activity'
 	 */
   getAllActivity(db) {
-    return db.select('*').from('activity').orderBy('id');
+    return db
+      .select('*')
+      .from('activity')
+      .orderBy('id');
   },
 	
   /*

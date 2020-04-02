@@ -78,7 +78,7 @@ ActivityRouter
       .catch(next);
   })
 	
-  .patch(bodyParser, (req,res,next) => {
+  .patch(bodyParser, async (req,res,next) => {
     const { name, description, is_accepted, is_rejected } = req.body;
 
     const ActivityToUpdate = { name, description, is_accepted, is_rejected};
@@ -93,10 +93,26 @@ ActivityRouter
     }
 
     if(is_accepted) {
-      ActivityToUpdate.accepted_count = res.activity.accepted_count + 1;
+      ActivityToUpdate.global_accepted_count = res.activity.global_accepted_count + 1;
+
+      const userAcceptedStat = await ProfileService.getUserActivityAcceptance(req.app.get('db'), req.user.id, res.activity.id);
+			
+      if(userAcceptedStat.length === 0){
+        const newRow = {
+          user_id: req.user.id,
+          activity: res.activity.id,
+          accepted_count: 1
+        };
+        ProfileService.insertAcceptedRejectedRow(req.app.get('db'), newRow);
+      }
+      else {
+        const updatedAcceptedCount = userAcceptedStat[0].accepted_count + 1;
+				
+        ProfileService.updateAcceptedCount(req.app.get('db'), res.activity.id, req.user.id, updatedAcceptedCount);
+      }
     }
 		
-    console.log(ActivityToUpdate, 'ActivityToUpdate');
+		
     ActivityService.updateActivity(
       req.app.get('db'),
       req.params.activity_id,

@@ -6,7 +6,6 @@ const ProfileRouter = express.Router();
 
 ProfileRouter
   .route('/mostpopular')
-
   .get((req, res, next) => {
     const db = req.app.get('db');
 
@@ -18,11 +17,15 @@ ProfileRouter
 ProfileRouter
   .route('/user')
   .all(requireAuth)
-  .all((req, res, next) => {
+  .get((req, res, next) => {
     const db = req.app.get('db');
 
     ProfileService.getUserTopActivitiesList(db, req.user.id)
-      .then(res => console.log(res.body));
+      .then(activities => {
+        res.json(activities);
+      })
+      .catch(next);
   });
+
 
 module.exports = ProfileRouter;
