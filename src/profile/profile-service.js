@@ -5,6 +5,7 @@ const ProfileService = {
                 .select('name', 'global_accepted_count')
                 .from('activity')
                 .orderBy([{column: 'global_accepted_count', order: 'desc'}, {column: 'name'}])
+                .limit(10)
     },
 
     getUserTopActivitiesList(db, userId){
@@ -14,6 +15,7 @@ const ProfileService = {
                 .rightJoin('activity', 'activity', 'activity.id')
                 .where({user_id: userId})
                 .orderBy([{column: 'accepted_count', order: 'desc'}, {column: 'name'}])
+                .limit(10)
     },
 
     insertAcceptedRejectedRow(db, newRow) {
