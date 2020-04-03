@@ -9,7 +9,7 @@ TRUNCATE
     ;
 
 -- admin123!
-
+-- Password1!
 INSERT INTO app_user (name, username, password_hash) 
 VALUES 
     ('Quarantino Admin','admin','$2a$12$FS/uVNt/sT6SZ344UokyMuy04pE26.4aBco/DC31oMbHjCPxh1f2a'),
