@@ -37,7 +37,14 @@ CategoriesRouter
         }
         CategoriesService.getActivitiesByCategory(db, category.id)
           .then(activities => {
-            console.log(activities);
+            
+            if (activities.length === 0) {
+              console.log('With empty array, activities: ', activities)
+              /**
+               * What should we return here?
+               */
+              return res.status(201).json('No activity with that category');
+            }
             return res.status(201).json(activities);
           });
       
