@@ -1,5 +1,4 @@
 const express = require('express');
-const ActivityService = require('../activity/activity-service');
 const ProfileService = require('./profile-service');
 const { requireAuth } = require('../middleware/jwt-auth');
 const ProfileRouter = express.Router();
