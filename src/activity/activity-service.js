@@ -3,8 +3,8 @@ const xss = require('xss');
 
 const ActivityService = {
 	/*
-	The following functions are tasked with providing the api with an interface to
-	utulize the database.
+	The following functions provide the api with an interface to
+	alter  the database.
 	 */
 	
 	/*
@@ -58,6 +58,14 @@ const ActivityService = {
 
 	},
 	
+	getCategoryIdByName(db, name) {
+		return db
+			.from('category')
+			.select('id')
+			.where({ name })
+	},
+	
+	
 	serializeActivities(activities) {
 		return activities.map(this.serializeActivity)
 	},
@@ -67,6 +75,7 @@ const ActivityService = {
 		return {
 			id: activity.id,
 			name: xss(activity.name),
+			category_id: xss(activity.category_id),
 			description: xss(activity.description),
 			is_accepted: activity.is_accepted,
 			is_rejected: activity.is_rejected

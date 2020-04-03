@@ -1,8 +1,8 @@
 const express = require('express');
 const ActivityService = require('./activity-service');
-const ProfileService = require('../profile/profile-service')
+const ProfileService = require('../profile/profile-service');
 const path = require('path');
-const { requireAuth } = require('../middleware/jwt-auth')
+const { requireAuth } = require('../middleware/jwt-auth');
 const bodyParser = express.json();
 const ActivityRouter = express.Router();
 
@@ -19,12 +19,13 @@ ActivityRouter
 			})
 			.catch(next);
 	})
-	.post(bodyParser, (req, res, next) => {
+	.post(bodyParser, async (req, res, next) => {
 		const db = req.app.get('db');
 		
-		const { name, description } = req.body;
-		const newActivity = { name, description };
-		
+		const { name, category, description } = req.body;
+		const categoryID = await ActivityService.getCategoryIdByName(db, category);
+		const newActivity = { name, categoryID, description };
+		console.log(newActivity);
 		for (const [key, value] of Object.entries(newActivity)) {
 			if (value === null ) {
 				return res.json({
@@ -41,7 +42,7 @@ ActivityRouter
 					.json(ActivityService.serializeActivity(activity))
 			})
 			.catch(next);
-	})
+	});
 	
 
 ActivityRouter
