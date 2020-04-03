@@ -10,7 +10,7 @@ const ProfileService = {
 
     getUserTopActivitiesList(db, userId){
         return db   
-                .select('name', 'accepted_count')
+                .select('name', 'accepted_count', 'description')
                 .from('accepted_rejected')
                 .rightJoin('activity', 'activity', 'activity.id')
                 .where({user_id: userId})
@@ -31,6 +31,14 @@ const ProfileService = {
                 .select('*')
                 .from('accepted_rejected')
                 .where({user_id: userId, activity: activityId})
+    },
+    
+    getSingleGlobalActivityCount(db, activityId) {
+        return db
+                .select('global_accepted_count')
+                .from('activity')
+                .where('id', activityId)
+                .first()
     },
 
     updateAcceptedCount(db, activityId, userId, acceptedCount){
