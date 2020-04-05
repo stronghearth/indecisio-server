@@ -21,6 +21,14 @@ const CategoriesService = {
       .select('*')
       .where({ category_id });
   },
+
+  getUserActivitiesByCategory(db, user_id, category_id) {
+    console.log(user_id, category_id)
+    return db
+      .from('activity')
+      .select('*')
+      .where({ category_id: category_id.id, creator_id: user_id });
+  },
 };
 
 module.exports = CategoriesService;

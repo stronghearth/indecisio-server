@@ -16,6 +16,14 @@ const ActivityService = {
       .from('activity')
       .orderBy('id');
   },
+
+  getAllUserActivity(db, user_id) {
+    return db
+      .select('*')
+      .from('activity')
+      .where({creator_id: user_id})
+      .orderBy('id');
+  },
 	
   /*
 	Inserts a user created Activity into the table called 'activity'
