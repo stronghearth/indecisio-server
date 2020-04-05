@@ -2,7 +2,7 @@ const ProfileService = {
 
   getTopActivitiesList(db){
     return db
-      .select('name', 'global_accepted_count')
+      .select('name', 'global_accepted_count', 'description')
       .from('activity')
       .orderBy([{column: 'global_accepted_count', order: 'desc'}, {column: 'name'}])
       .limit(10);

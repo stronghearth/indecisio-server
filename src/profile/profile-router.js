@@ -21,7 +21,7 @@ ProfileRouter
 
     ProfileService.getUserTopActivitiesList(db, req.user.id)
       .then(activities => {
-        res.json(activities);
+        res.json(activities), console.log(activities);
       })
       .catch(next);
   });
