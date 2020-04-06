@@ -15,6 +15,7 @@ const ActivityService = {
       .select('*')
       .from('activity')
       .orderBy('date_created', 'desc')  //used to be id
+      // Put the limit on client side
       .limit(3);
   },
 
