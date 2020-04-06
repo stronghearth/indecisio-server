@@ -9,7 +9,9 @@ ProfileRouter
     const db = req.app.get('db');
 
     ProfileService.getTopActivitiesList(db)
-      .then(activities => res.json(activities))
+      .then(activities => {
+          res.json(activities)
+      })
       .catch(next);
   });
 

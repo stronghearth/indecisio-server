@@ -2,17 +2,20 @@ const ProfileService = {
 
   getTopActivitiesList(db){
     return db
-      .select('name', 'global_accepted_count')
+      .select('activity.name', 'global_accepted_count', 'description', 'username')
       .from('activity')
+      .rightJoin('app_user', 'creator_id', 'app_user.id')
+      .whereNot('global_accepted_count', 0)
       .orderBy([{column: 'global_accepted_count', order: 'desc'}, {column: 'name'}])
       .limit(10);
   },
 
   getUserTopActivitiesList(db, userId){
     return db   
-      .select('name', 'accepted_count', 'description')
+      .select('activity.name', 'accepted_count', 'description', 'username')
       .from('accepted_rejected')
       .rightJoin('activity', 'activity', 'activity.id')
+      .rightJoin('app_user', 'creator_id', 'app_user.id')
       .where({user_id: userId})
       .orderBy([{column: 'accepted_count', order: 'desc'}, {column: 'name'}])
       .limit(10);
