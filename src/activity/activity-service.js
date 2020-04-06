@@ -60,9 +60,10 @@ const ActivityService = {
 	
 	getCategoryIdByName(db, name) {
 		return db
-			.from('category')
 			.select('id')
-			.where({ name })
+			.from('category')
+			.join('activity')
+			.where( category(cat_name), '=', name )
 	},
 	
 	
