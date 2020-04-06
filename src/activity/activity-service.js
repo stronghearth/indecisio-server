@@ -73,14 +73,7 @@ const ActivityService = {
 			is_rejected: activity.is_rejected
 		}
 	}
-    return {
-      id: activity.id,
-      name: xss(activity.name),
-      description: xss(activity.description),
-      is_accepted: activity.is_accepted,
-      is_rejected: activity.is_rejected
-    };
-  }
+ 
 };
 module.exports = ActivityService;
 
