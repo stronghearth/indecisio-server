@@ -14,7 +14,8 @@ const ActivityService = {
     return db
       .select('*')
       .from('activity')
-      .orderBy('id');
+      .orderBy('date_created', 'desc')  //used to be id
+      .limit(3);
   },
 
   getAllUserActivity(db, user_id) {
