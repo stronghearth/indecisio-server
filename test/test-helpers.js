@@ -47,7 +47,8 @@ function makeActivityBody() {
       description: 'Description 1',
       is_accepted: true,
       is_rejected: false,
-      global_accepted_count: 3
+      global_accepted_count: 3,
+      category_id: 1
       // creator_id: 1,
       // category_id: null
     },
@@ -56,41 +57,43 @@ function makeActivityBody() {
       description: 'Description 2',
       is_accepted: true,
       is_rejected: false,
-      global_accepted_count: 1
+      global_accepted_count: 1,
       // creator_id: 1,
-      // category_id: null
+      category_id: 2
     },
     {
       name: 'Activity 3',
       description: 'Description 3',
       is_accepted: false,
       is_rejected: true,
-      global_accepted_count: 19
+      global_accepted_count: 19,
       // creator_id: 1,
-      // category_id: null
+      category_id: 3
     },
     {
       name: 'Activity 4',
       description: 'Description 4',
       is_accepted: true,
       is_rejected: false,
-      global_accepted_count: 0
+      global_accepted_count: 0,
       // creator_id: 2,
-      // category_id: null
+      category_id: 4
     },
     {
       name: 'Activity 5',
       description: 'Description 5',
       is_accepted: false,
       is_rejected: true,
-      global_accepted_count: 100
+      global_accepted_count: 100,
       // creator_id: 2,
-      // category_id: null
+      category_id: 5
     },
   ];
 	
   return activities;
 }
+
+
 
 /**
  * make a bearer token with jwt for authorization header

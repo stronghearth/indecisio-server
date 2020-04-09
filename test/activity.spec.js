@@ -6,7 +6,7 @@ const testHelpers = require('./test-helpers');
 describe('Activity Routes', () => {
   let dummyUsers = testHelpers.makeUsersArray();
   let dummyActivities = testHelpers.makeActivityBody();
-  let testUser = (testHelpers.makeAuthHeader(dummyUsers[0]));
+  
 
   context('activity endpoints', () => {
     let db;
@@ -19,20 +19,26 @@ describe('Activity Routes', () => {
       app.set('db', db);
     });
 
-    before('clean the tables', () =>
+    after('clean the tables', () =>
       db.raw('ALTER TABLE activity DROP COLUMN IF EXISTS category_id'));
     
-    before('clean the tables', () =>
+    after('clean the tables', () =>
       db('category').truncate());
     
-    before('clean the tables', () =>
+    after('clean the tables', () =>
       db('accepted_rejected').truncate());
       
-    before('clean the tables', () =>  
+    after('clean the tables', () =>  
       db.raw('TRUNCATE TABLE activity CASCADE'));
     
-    before('clean the tables', () =>  
+    after('clean the tables', () =>  
       db.raw('TRUNCATE TABLE app_user CASCADE'));
+
+    before('clean the tables', () =>
+      db.raw('ALTER TABLE activity DROP COLUMN IF EXISTS category_id'));
+
+    before('category_id column', () => 
+      db.raw('ALTER TABLE activity ADD COLUMN category_id INT'));
     
 
     before('insert dummy users', () => {
@@ -40,6 +46,8 @@ describe('Activity Routes', () => {
         .into('app_user')
         .insert(dummyUsers);
     });
+
+    let testUser = (testHelpers.makeAuthHeader(dummyUsers[0]));
 
     
 
@@ -77,29 +85,99 @@ describe('Activity Routes', () => {
       });
     });
 
+    // {
+    //   name: newActivity.name,
+    //   description: newActivity.description,
+    //   category_id: newActivity.category,
+    //   creator_id: newActivity.creator
+    // }
+
     describe('POST /api/activity', () => {
+      let dummyPost = {
+        name: 'Test post activity',
+        description: 'Testing out the post endpoint',
+        // creator_id: 1, 
+        // category_id: 1
+      };
 
-    })
+      it('POSTS the new activity and returns a successful creation message', async () => {
+        await supertest(app)
+          .post('/api/activity')
+          .set('Authorization', testUser)
+          .send(dummyPost)
+          .expect(201);
+          
+      });
+      
+    });
     
-    describe('GET /api/activity/:activity_id', () => {
-
-    })
+    describe('GET /api/categories/:category_name', () => {
+      before('insert dummy activities', () => {
+        return db
+          .into('activity')
+          .insert(dummyActivities);
+      });
+      before('we need categories', () => {
+        return db
+          .into('category')
+          .insert([{cat_name: 'Entertainment'}, {cat_name: 'Chores'}, {cat_name: 'Learn'}, {cat_name: 'Fitness'}, {cat_name: 'Socialize'}]);
+      });
+      it('responds with activities with matching activity_id', () => {
+        let cat_name = 'Entertainment';
+        return supertest(app)
+          .get(`/api/categories/${cat_name}`)
+          .set('Authorization', testUser)
+          .expect(201)
+          .expect(res => {
+            for (let i = 0; i < res.length; i++) {
+              
+              expect(res.body[i].name).to.equal(dummyActivities[i].name);
+              expect(res.body[i].description).to.equal(dummyActivities[i].description);
+              expect(res.body[i].is_accepted).to.equal(dummyActivities[i].is_accepted);
+              expect(res.body[i].is_rejected).to.equal(dummyActivities[i].is_rejected);
+            }
+          });
+      });
+    });
 
     
 
     describe('PATCH /api/activity/:activity_id', () => {
+      before('insert dummy activities', () => {
+        return db
+          .into('activity')
+          .insert(dummyActivities);
+      });
+      before('we need categories', () => {
+        return db
+          .into('category')
+          .insert([{cat_name: 'Entertainment'}, {cat_name: 'Chores'}, {cat_name: 'Learn'}, {cat_name: 'Fitness'}, {cat_name: 'Socialize'}]);
+      });
 
-    })
+      let updatedDummyActivity = {
+        name: 'Activity 1',
+        description: 'Description 1',
+        is_accepted: false,
+        is_rejected: true,
+        global_accepted_count: 3,
+        category_id: 1
+      };
 
+      it('successfully PATCHES an activity and responds with 204', async () => {
+        let activity_id = await supertest(app).get('/api/activity').set('Authorization', testUser).then(res => res.body[0].id);
+        console.log('The id:', activity_id);
+        return supertest(app)
+          .patch(`/api/activity/${activity_id}`)
+          .set('Authorization', testUser)
+          .send(updatedDummyActivity)
+          .expect(204);
 
-    
-
+            
+      });    
+    });
   });
-  
-  /*
-  * Adding
-  * */
-  
-  
-  
 });
+
+  
+  
+  
