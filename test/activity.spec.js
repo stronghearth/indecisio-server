@@ -3,7 +3,7 @@ const knex = require('knex');
 const testHelpers = require('./test-helpers');
 require ('dotenv').config();
 
-describe('App', () => {
+describe('Activity Routes', () => {
   let dummyUsers = testHelpers.makeUsersArray();
   let dummyActivities = testHelpers.makeActivityBody();
   let testUser = (testHelpers.makeAuthHeader(dummyUsers[0]));
