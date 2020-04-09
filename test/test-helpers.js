@@ -20,16 +20,16 @@ function makeKnexInstance() {
 function makeUsersArray() {
   return [
     {
-      id: 1,
       username: 'test-user-1',
       name: 'Test user 1',
-      password: 'password',
+      //password1!
+      password_hash: '$2y$12$k00WQYVXJiNW3ugDjxBFiuheY9goSILp5p7NmLMg5GaePf49NllgG',
     },
     {
-      id: 2,
       username: 'test-user-2',
       name: 'Test user 2',
-      password: 'password',
+      //password1!
+      password_hash: '$2y$12$k00WQYVXJiNW3ugDjxBFiuheY9goSILp5p7NmLMg5GaePf49NllgG',
     },
   ];
 }
@@ -40,34 +40,56 @@ function makeUsersArray() {
  * @returns {Array(activities)} - arrays of activities
  */
 function makeActivityBody() {
+  
   const activities = [
     {
-      name: 'name mcnamey',
-      description: 'ibnmstoibm'
+      name: 'Activity 1',
+      description: 'Description 1',
+      is_accepted: true,
+      is_rejected: false,
+      global_accepted_count: 3
+      // creator_id: 1,
+      // category_id: null
     },
     {
-      name: 'name2 mcnamey2',
-      description: 'ibnmstoibm'
+      name: 'Activity 2',
+      description: 'Description 2',
+      is_accepted: true,
+      is_rejected: false,
+      global_accepted_count: 1
+      // creator_id: 1,
+      // category_id: null
     },
     {
-      name: 'name3 mcnamey3',
-      description: 'ibnmstoibm'
+      name: 'Activity 3',
+      description: 'Description 3',
+      is_accepted: false,
+      is_rejected: true,
+      global_accepted_count: 19
+      // creator_id: 1,
+      // category_id: null
     },
     {
-      name: 'name4 mcnamey4',
-      description: 'ibnmstoibm'
+      name: 'Activity 4',
+      description: 'Description 4',
+      is_accepted: true,
+      is_rejected: false,
+      global_accepted_count: 0
+      // creator_id: 2,
+      // category_id: null
     },
     {
-      name: 'name5 mcname5',
-      description: 'ibnmstoibm'
-    },
-    {
-      name: 'name5 mcnamey5',
-      description: 'ibnmstoibm'
+      name: 'Activity 5',
+      description: 'Description 5',
+      is_accepted: false,
+      is_rejected: true,
+      global_accepted_count: 100
+      // creator_id: 2,
+      // category_id: null
     },
   ];
 	
-  return [activities];
+  return activities;
 }
 
 /**
@@ -94,7 +116,7 @@ function cleanTables(db) {
     trx.raw(
       `TRUNCATE
         "activity",
-        "user"`
+        "app_user"`
     )
       .then(() =>
         Promise.all([
@@ -116,11 +138,10 @@ function cleanTables(db) {
  */
 function seedUsers(db, users) {
   const preppedUsers = users.map(user => ({
-    ...user,
-    password: bcrypt.hashSync(user.password, 1)
+    ...user
   }));
   return db.transaction(async trx => {
-    await trx.into('user').insert(preppedUsers);
+    await trx.into('app_user').insert(preppedUsers);
 		
     await trx.raw(
       `SELECT setval('user_id_seq', ?)`,

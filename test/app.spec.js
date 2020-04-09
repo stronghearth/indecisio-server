@@ -1,25 +1,15 @@
 const app = require('../src/app');
 const knex = require('knex');
 const testHelpers = require('./test-helpers');
-
+require ('dotenv').config();
 
 describe('App', () => {
-  console.log(testHelpers.makeActivityBody());
-  console.log(testHelpers.makeAuthHeader('fred'));
+  let dummyUsers = testHelpers.makeUsersArray();
+  let dummyActivities = testHelpers.makeActivityBody();
+  let testUser = (testHelpers.makeAuthHeader(dummyUsers[0]));
+
   context('activity endpoints', () => {
     let db;
-
-    let exampleActivityReturn =
-      [
-        {
-          "name": "Pushdowns",
-          "description": "Jump and give me 0.5"
-        },
-        {
-          "name": "Learn everything there is to know about the socratic paradox",
-          "description": "This should take about two hours to complete"
-        }
-      ];
   
     before('make knex instance', () => {
       db = knex({
@@ -29,35 +19,64 @@ describe('App', () => {
       app.set('db', db);
     });
 
-    after('disconnect from db', () => db.destroy());
+    before('clean the tables', () =>
+      db.raw('ALTER TABLE activity DROP COLUMN IF EXISTS category_id'));
+    
+    before('clean the tables', () =>
+      db('category').truncate());
+    
+    before('clean the tables', () =>  
+      db.raw('ALTER TABLE activity DROP COLUMN IF EXISTS category_id'));
+    
+    before('clean the tables', () =>
+      db('accepted_rejected').truncate());
+      
+    before('clean the tables', () =>  
+      db.raw('TRUNCATE TABLE activity CASCADE'));
+    
+    before('clean the tables', () =>  
+      db.raw('TRUNCATE TABLE app_user CASCADE'));
+    
 
-    // before('clean the table', () => db('activity').truncate());
+    before('insert dummy users', () => {
+      return db
+        .into('app_user')
+        .insert(dummyUsers);
+    });
 
     
+
+    after('disconnect from db', () => db.destroy());    
 
     context('GET /api/activity with empty db', () => {
       it('GET /api/activity responds with empty array if empty', () => {
         return supertest(app)
           .get('/api/activity')
-          .set('Authorization', testHelpers.makeAuthHeader('fred'))
+          .set('Authorization', testUser)
           .expect(200, []);
       });
     });
     
     context('GET /api/activity with info in db', () => {
-      beforeEach('inserting data', () => {
+      before('insert dummy activities', () => {
         return db
           .into('activity')
-          .insert(exampleActivityReturn);
-          
+          .insert(dummyActivities);
       });
-  
-      // afterEach('clean the table', () => db('activity').truncate());
-      
+
       it('GET /api/activity responds with list of activities', () => {
         return supertest(app)
-          .get('/api/activity');
-  
+          .get('/api/activity')
+          .set('Authorization', testUser)
+          .expect(200)
+          .expect(res => {
+            for (let i = 0; i < res.length; i++) {
+              expect(res.body[i].name).to.equal(dummyActivities[i].name);
+              expect(res.body[i].description).to.equal(dummyActivities[i].description);
+              expect(res.body[i].is_accepted).to.equal(dummyActivities[i].is_accepted);
+              expect(res.body[i].is_rejected).to.equal(dummyActivities[i].is_rejected);
+            }
+          });
       });
     });
     
