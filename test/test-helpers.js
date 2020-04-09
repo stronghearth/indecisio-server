@@ -189,4 +189,52 @@ module.exports = {
  * List of every path to be tested:
  * 
  * 
+ * /api/activity (Activity Router)
+ * 
+ *    / 
+ *      .get
+ *      .post
+ * 
+ *    /:activity_id
+ *      .get
+ *      .delete?
+ *      .patch
+ * 
+ * /api/auth  (authRouter)
+ * 
+ *    /token
+ *      .post
+ *      .put
+ * 
+ * /api/categories (CategoriesRouter)
+ * 
+ *    /
+ *      .get
+ *    
+ *    /:cat_name
+ *      .get
+ * 
+ * /api/profile (profileRouter)
+ * 
+ *    /mostpopular
+ *      .get
+ *    
+ *    /user
+ *      .get
+ * 
+ *    /notglobal
+ *      .post
+ * 
+ *    /notglobal/:category_name
+ *      .post
+ * 
+ * /api/user (userRouter)
+ * 
+ *    /
+ *      .post
+ * 
+ *
+ * 
+ * 
+ * 
  */

@@ -25,9 +25,6 @@ describe('Activity Routes', () => {
     before('clean the tables', () =>
       db('category').truncate());
     
-    before('clean the tables', () =>  
-      db.raw('ALTER TABLE activity DROP COLUMN IF EXISTS category_id'));
-    
     before('clean the tables', () =>
       db('accepted_rejected').truncate());
       
@@ -48,7 +45,7 @@ describe('Activity Routes', () => {
 
     after('disconnect from db', () => db.destroy());    
 
-    context('GET /api/activity with empty db', () => {
+    describe('GET /api/activity with empty db', () => {
       it('GET /api/activity responds with empty array if empty', () => {
         return supertest(app)
           .get('/api/activity')
@@ -79,6 +76,22 @@ describe('Activity Routes', () => {
           });
       });
     });
+
+    describe('POST /api/activity', () => {
+
+    })
+    
+    describe('GET /api/activity/:activity_id', () => {
+
+    })
+
+    
+
+    describe('PATCH /api/activity/:activity_id', () => {
+
+    })
+
+
     
 
   });
