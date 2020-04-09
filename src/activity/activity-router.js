@@ -1,47 +1,47 @@
 const express = require('express');
 const ActivityService = require('./activity-service');
-const ProfileService = require('../profile/profile-service')
+const ProfileService = require('../profile/profile-service');
 const path = require('path');
-const { requireAuth } = require('../middleware/jwt-auth')
+const { requireAuth } = require('../middleware/jwt-auth');
 const bodyParser = express.json();
 const ActivityRouter = express.Router();
 
 
 
 ActivityRouter
-	.route('/')
-	.all(requireAuth)
-	.get((req,res,next) => {
-		const db = req.app.get('db');
-		ActivityService.getAllActivity(db)
-			.then(activities => {
-				res.json(ActivityService.serializeActivities(activities))
-			})
-			.catch(next);
-	})
-	.post(bodyParser, async (req, res, next) => {
-		const db = req.app.get('db');
+  .route('/')
+  .all(requireAuth)
+  .get((req,res,next) => {
+    const db = req.app.get('db');
+    ActivityService.getAllActivity(db)
+      .then(activities => {
+        res.json(ActivityService.serializeActivities(activities));
+      })
+      .catch(next);
+  })
+  .post(bodyParser, async (req, res, next) => {
+    const db = req.app.get('db');
 		
-		const { name, category_id, description, creator_id } = req.body;
-		const newActivity = { name, category_id, description, creator_id };
-		console.log(newActivity);
-		for (const [key, value] of Object.entries(newActivity)) {
-			if (value === null ) {
-				return res.json({
-					error: { message : `Missing ${key} in request body`}
-				})
-			}
-		}
-		ActivityService.insertActivity(db, newActivity)
+    const { name, category_id, description, creator_id } = req.body;
+    const newActivity = { name, category_id, description, creator_id };
+    console.log(newActivity);
+    for (const [key, value] of Object.entries(newActivity)) {
+      if (value === null ) {
+        return res.json({
+          error: { message : `Missing ${key} in request body`}
+        });
+      }
+    }
+    ActivityService.insertActivity(db, newActivity)
 			
-			.then(activity => {
-				res
-					.status(201)
-					.location(path.posix.join(req.originalUrl, `${activity.id}`))
-					.json(ActivityService.serializeActivity(activity))
-			})
-			.catch(next);
-	});
+      .then(activity => {
+        res
+          .status(201)
+          .location(path.posix.join(req.originalUrl, `${activity.id}`))
+          .json(ActivityService.serializeActivity(activity));
+      })
+      .catch(next);
+  });
 	
 
 ActivityRouter

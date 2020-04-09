@@ -1,8 +1,11 @@
 const app = require('../src/app');
 const knex = require('knex');
+const testHelpers = require('./test-helpers');
 
 
 describe('App', () => {
+  console.log(testHelpers.makeActivityBody());
+  console.log(testHelpers.makeAuthHeader('fred'));
   context('activity endpoints', () => {
     let db;
 
@@ -28,7 +31,7 @@ describe('App', () => {
 
     after('disconnect from db', () => db.destroy());
 
-    before('clean the table', () => db('activity').truncate());
+    // before('clean the table', () => db('activity').truncate());
 
     
 
@@ -36,6 +39,7 @@ describe('App', () => {
       it('GET /api/activity responds with empty array if empty', () => {
         return supertest(app)
           .get('/api/activity')
+          .set('Authorization', testHelpers.makeAuthHeader('fred'))
           .expect(200, []);
       });
     });
@@ -48,7 +52,7 @@ describe('App', () => {
           
       });
   
-      afterEach('clean the table', () => db('activity').truncate());
+      // afterEach('clean the table', () => db('activity').truncate());
       
       it('GET /api/activity responds with list of activities', () => {
         return supertest(app)

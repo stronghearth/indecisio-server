@@ -2,7 +2,7 @@
 const xss = require('xss');
 
 const ActivityService = {
-	/*
+  /*
 	The following functions provide the api with an interface to
 	alter  the database.
 	 */
@@ -14,8 +14,8 @@ const ActivityService = {
     return db
       .select('*')
       .from('activity')
-      .orderBy('date_created', 'desc')  //used to be id
-      // Put the limit on client side
+      .orderBy('date_created', 'desc');  //used to be id
+    // Put the limit on client side
   
   },
 
@@ -74,15 +74,15 @@ const ActivityService = {
 	
   serializeActivity(activity) {
 		
-		return {
-			id: activity.id,
-			name: xss(activity.name),
-			category_id: xss(activity.category_id),
-			description: xss(activity.description),
-			is_accepted: activity.is_accepted,
-			is_rejected: activity.is_rejected
-		}
-	}
+    return {
+      id: activity.id,
+      name: xss(activity.name),
+      category_id: xss(activity.category_id),
+      description: xss(activity.description),
+      is_accepted: activity.is_accepted,
+      is_rejected: activity.is_rejected
+    };
+  }
  
 };
 module.exports = ActivityService;
