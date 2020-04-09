@@ -1,7 +1,7 @@
 const app = require('../src/app');
 const knex = require('knex');
 const testHelpers = require('./test-helpers');
-require ('dotenv').config();
+
 
 describe('Activity Routes', () => {
   let dummyUsers = testHelpers.makeUsersArray();
