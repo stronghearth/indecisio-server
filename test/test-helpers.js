@@ -184,3 +184,9 @@ module.exports = {
   seedUsers,
   seedUsersActivity,
 };
+
+/**
+ * List of every path to be tested:
+ * 
+ * 
+ */
