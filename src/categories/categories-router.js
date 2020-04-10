@@ -52,8 +52,5 @@ CategoriesRouter
       .catch(next);
   });
 	
-// 	.get((req,res) => {
-// 		res.json(ActivityService.serializeActivity(res.category))
-// 	})
 
 module.exports = CategoriesRouter;

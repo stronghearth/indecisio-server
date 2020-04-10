@@ -55,7 +55,6 @@ ProfileRouter
   .all(requireAuth)
   .post((req, res, next) => {
     const db = req.app.get('db');
-    console.log(req.params.category_name)
     CategoriesService.getCategoryIdFromName(db, req.params.category_name)
       .then(category_id => 
         CategoriesService.getUserActivitiesByCategory(db, req.user.id, category_id)
