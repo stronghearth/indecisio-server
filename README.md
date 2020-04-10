@@ -1,10 +1,18 @@
 # Indecisio Server
 
-## Team
+# Table of Contents
+
+  1. [Team](#Team)
+  2. [Link to Client Repo](#Link-to-Client-Repo)
+  3. [API Endpoints](#API-Endpoints)
+  4. [Get Started](#Get-Started)
+
+# Team
 - [Blade Boles](https://github.com/BladeBoles)
 - [Taylor Bradshaw](https://github.com/stronghearth)
 - [William MacNeil](https://github.com/Bilbertius)
-## Link to Client Repo
+
+# Link to Client Repo
 
 - https://github.com/thinkful-ei-jaguar/indecisio-client
 
