@@ -167,7 +167,7 @@
     }
 ]`
 
-_Successful POST Returns 201 with JSON object containing new activity's information_
+  _Successful POST Returns 201 with JSON object containing new activity's information_
 
 * **Code:** 201 <br />
     **Content:** `{ 'name' : 'Do the dishes!', 'description' : 'You know they're piling up', 'category_id': '1', 'creator_id': '2', 'is_accepted':'false', 'is_rejected': 'false' }`
