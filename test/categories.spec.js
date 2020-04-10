@@ -5,7 +5,7 @@ const testHelpers = require('./test-helpers');
 describe('Category Routes', () => {
   let dummyUsers = testHelpers.makeUsersArray();
   let dummyActivities = testHelpers.makeActivityBody();
-  let dummyCategories = [{cat_name: 'Entertainment'}, {cat_name: 'Chores'}, {cat_name: 'Learn'}, {cat_name: 'Fitness'}, {cat_name: 'Socialize'}]
+  let dummyCategories = [{cat_name: 'Entertainment'}, {cat_name: 'Chores'}, {cat_name: 'Learn'}, {cat_name: 'Fitness'}, {cat_name: 'Socialize'}];
   
 
   context('activity endpoints', () => {
