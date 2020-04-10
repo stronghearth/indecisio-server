@@ -1,7 +1,7 @@
 const express = require('express');
 const ProfileService = require('./profile-service');
-const CategoriesService = require('../categories/categories-service')
-const ActivitiesService = require('../activity/activity-service')
+const CategoriesService = require('../categories/categories-service');
+const ActivitiesService = require('../activity/activity-service');
 const { requireAuth } = require('../middleware/jwt-auth');
 const ProfileRouter = express.Router();
 
@@ -12,7 +12,7 @@ ProfileRouter
 
     ProfileService.getTopActivitiesList(db)
       .then(activities => {
-          res.json(activities)
+        res.json(activities);
       })
       .catch(next);
   });

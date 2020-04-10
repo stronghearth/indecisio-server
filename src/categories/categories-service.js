@@ -23,7 +23,7 @@ const CategoriesService = {
   },
 
   getUserActivitiesByCategory(db, user_id, category_id) {
-    console.log(user_id, category_id)
+    console.log(user_id, category_id);
     return db
       .from('activity')
       .select('*')
