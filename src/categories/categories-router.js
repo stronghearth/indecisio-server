@@ -39,7 +39,6 @@ CategoriesRouter
           .then(activities => {
             
             if (activities.length === 0) {
-              console.log('With empty array, activities: ', activities);
               /**
                * What should we return here?
                */

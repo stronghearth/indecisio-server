@@ -165,7 +165,6 @@ describe('Activity Routes', () => {
 
       it('successfully PATCHES an activity and responds with 204', async () => {
         let activity_id = await supertest(app).get('/api/activity').set('Authorization', testUser).then(res => res.body[0].id);
-        console.log('The id:', activity_id);
         return supertest(app)
           .patch(`/api/activity/${activity_id}`)
           .set('Authorization', testUser)
