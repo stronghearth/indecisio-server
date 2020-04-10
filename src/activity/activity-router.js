@@ -24,7 +24,6 @@ ActivityRouter
 		
     const { name, category_id, description, creator_id } = req.body;
     const newActivity = { name, category_id, description, creator_id };
-    console.log(newActivity);
     for (const [key, value] of Object.entries(newActivity)) {
       if (value === null ) {
         return res.json({

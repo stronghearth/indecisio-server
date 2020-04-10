@@ -8,7 +8,6 @@ const CategoriesService = {
   },
 
   getCategories(db){
-    console.log('CAN YOU SEE THIS');
     return db
       .select('*')
       .from('category')
@@ -23,7 +22,6 @@ const CategoriesService = {
   },
 
   getUserActivitiesByCategory(db, user_id, category_id) {
-    console.log(user_id, category_id);
     return db
       .from('activity')
       .select('*')
