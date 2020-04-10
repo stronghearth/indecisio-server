@@ -1,10 +1,9 @@
 # Indecisio Server
 
 ## Team
-- Blade Boles
-- Taylor Bradshaw
-- William MacNeil
-
+- [Blade Boles](https://github.com/BladeBoles)
+- [Taylor Bradshaw](https://github.com/stronghearth)
+- [William MacNeil](https://github.com/Bilbertius)
 ## Link to Client Repo
 
 - https://github.com/thinkful-ei-jaguar/indecisio-client
